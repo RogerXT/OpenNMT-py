@@ -227,8 +227,115 @@ class NMTLossCompute(LossComputeBase):
             )
 
         self._tgt_vocab = tgt_vocab
+        """
+        self._ignore = set(['and', 'people', 'is', 'it', 'an', 'affected', 'as', 'are', 'have', 'in', "'s", '"', 'from', 'for',
+                    'their', ')', '(', '-', ',', 'been', '.', 'to', 'which', 'has', 'was', 'more', 'be', '@-@', 'that',
+                    'food', 'million', 'water', 'said', 'not', 'The', 'with', 'by', 'areas', 'a', 'on', 'this', 'of',
+                    'also', '&quot;', 'will', 'relief', 'were', 'the', 'or', 'at'])
+        
+        self._ignore = set(
+            [43, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 17, 19, 20, 21, 22, 23, 24, 26, 28, 29, 30, 31, 32, 34, 35, 36, 37,
+             39, 555, 46, 47, 48, 50, 52, 55, 56, 59, 60, 63, 288, 265, 74, 79, 369, 191, 2303])
+        
+        self._content = set(['sector', 'Tunduma', 'pardon', 'worms', 'crocodile', 'protest', 'skin', 'grandparent', 'milk', 'suicide',
+             'e-mail', 'peanut', 'disability', 'finally', 'dairy', 'whoredom', 'under', 'woman', 'song', "women's",
+             'spoon', 'headgear', 'condition', 'school', 'harbor', 'gun', 'trench', 'team', 'small', 'heading', 'pork',
+             'revolution', 'force', 'tired', 'fairness', 'mishap', 'State', 'lawyer', 'port', 'Red', 'constitution',
+             'genitalia', 'cleanliness', 'pipes', 'cooking', 'cell', 'public', 'Sumbawanga', 'body', 'transportation',
+             'malaria', 'exchange', 'existence', 'funeral', 'makeup', 'monetary', 'combating', 'protection', 'poverty',
+             'bleaching', 'English', 'change', 'celebration', 'arena', 'bible', 'talent', 'Chinese', 'museums',
+             'by-product', 'exams', 'social', 'honor', 'control', 'ago', 'deputy', 'private', 'appliances', 'apply',
+             'crisis', 'reflector', 'cha', 'eye', 'hospital', 'visit', 'sports', 'live', 'camera', 'music', 'vehicle',
+             'strike', 'do-over', 'lungs', 'substances', 'club', 'pigment', 'reign', 'American', 'rabbit', 'laborer',
+             'hold', 'fly', 'account', 'sanctions', 'pursue', 'car', 'work', 'gasoline', 'donut', 'root', 'industry',
+             'beautiful', 'spy', 'visage', 'council', 'cows', 'clothing', 'end', 'thing', 'boxing', 'ledger',
+             'elephantiasis', 'animal', 'elephant', 'answer', 'cheetah', 'goat', 'stock', 'product', 'attend', 'farm',
+             'ladder', 'British', 'entrepreneurship', 'deforestation', 'sustainability', 'catalog', 'produce', 'blood',
+             'president', 'law', 'aviator', 'natural', 'Chama', 'liquid', 'mango', 'green', 'block', 'shade',
+             'healthcare', 'dispersing', 'Bukoba', 'gesture', 'emotion', 'infant', 'shield', 'govern', 'AIDS',
+             'embezzlement', 'motorcycle', 'interpreter', 'expectorate', 'mayor', 'Bungoma', 'labor', 'window',
+             'production', 'lorry', 'orange', 'soccer', 'crowds', 'eventually', 'coffee', 'return', 'greater',
+             'matches', 'band', 'monarch', 'Mogadishu', 'sweetener', 'association', 'bread', 'meat', 'pregnant',
+             'potatoes', 'university', 'India', 'slavery', 'tear', 'fisherman', 'arrow', 'Kenya', 'bond', 'telescope',
+             'doing', 'house', 'fish', 'reduce', 'solution', 'books', 'year', 'girl', 'extract', 'insurance', 'living',
+             'container', 'beauty', 'driving', 'entertainment', 'armor', 'factory', 'increase', 'investigation',
+             'China', 'paradise', 'medicine', 'evaluation', 'salute', 'banana', 'cars', 'given', 'cockroach',
+             'standard', 'customs', 'wall', 'Kagera', 'Clinton', 'Chad', 'refugee', 'Ummy', 'illicit', 'footwear',
+             'Uganda', 'invitation', 'childhood', 'nutrition', 'Brazil', 'cheese', 'major', 'industrial', 'Kakamega',
+             'fast', 'scissors', 'ditch', 'disaster', 'city', 'horse', 'guest', 'service', 'flag', 'construct', 'name',
+             'attack', 'focal', 'ankle', 'white', 'farming', 'nut', 'friend', 'conduit', 'mining', 'murder', 'hub',
+             'tool', 'hotel', 'kitchen', 'wisdom', 'chemicals', 'part', 'axe', 'branches', 'institution', 'Mwanza',
+             'king', 'photograph', 'condolences', 'bed', 'crossroads', 'stalk', 'Nyanza', 'donkey', 'hue', 'strengthen',
+             'imports', 'parking', 'marijuana', 'prostitution', 'juice', 'rat', 'selling', 'rent', 'stigma',
+             'breakfast', 'seminar', 'screw', 'abroad', 'self', 'agency', 'snow', 'bacteria', 'build', 'truck',
+             'pursuer', 'fuels', 'needle', 'price', 'anatomy', 'most', 'smokers', 'letter', 'police', 'salary', 'dream',
+             'medical', 'request', 'disease', 'face', 'fugitives', 'pineapple', 'assistance', 'sibling', 'amending',
+             'bomb', 'bring', 'colors', 'abstain', 'earth', 'debate', 'ground', 'snack', 'tire', 'title', 'justice',
+             'Muslim', 'sugar', 'liberation', 'fickle', 'beautify', 'black', 'inherited', 'mortality', 'publicity',
+             'permission', 'bilharzia', 'lighter', 'report', 'banner', 'merchandise', 'enemy', 'tobacco', 'artist',
+             'morning', 'banking', 'rooms', 'constructing', 'reference', 'excavation', 'bucket', 'national', 'orphan',
+             'toiletry', 'culture', 'defense', 'agricultural', 'tender', 'explosive', 'Shimoni', 'hammer', 'braid',
+             'favor', 'state', 'kilometer', 'finger', 'Ugandan', 'geometric', 'terms', 'ability', 'relative', 'court',
+             'vitamin', 'aircraft', 'news', 'comb', 'improve', 'league', 'accident', 'license', 'country', 'cinder',
+             'cancer', 'point', 'color', 'pot', 'twin', 'church', 'vessel', 'respect', 'boat', 'poem', 'debt', 'treaty',
+             'rebuild', 'political', 'secret', 'chalkboard', 'brick', 'curtail', 'woke', 'cosmetics', 'life', 'ghost',
+             'spit', 'drugs', 'gas', 'policy', 'child', 'spirit', 'pilot', 'commerce', 'toothless', 'sanitation',
+             'by-election', 'utensils', 'Temeke', 'value', 'chalk', 'lizard', 'residence', 'aid', 'property',
+             'flooding', 'group', 'congratulation', 'soil', 'imperialism', 'campaigning', 'media', 'make', 'trip',
+             'citrus', 'speech', 'harmony', 'vegetable', 'party', 'colonies', 'forgiveness', 'bells', 'oil',
+             'temporary', 'Morogoro', 'applaud', 'HPV', 'hand', 'fruit', 'delicate', 'student', 'predecessors',
+             'diabetes', 'poultry', 'Bashir', 'weapon', 'well', 'Ramadan', 'ocean', 'person', 'bottle', 'organization',
+             'ambassador', 'peace', 'money', 'clinic', 'fishing', 'abstained', 'flashlight', 'death', 'sunflower',
+             'cup', 'source', 'bank', 'circumcision', 'furniture', 'match', 'real', 'municipal', 'government',
+             'inundation', 'bid', 'albino', 'dark', 'cultural', 'birth', 'desk', 'world', 'shadow', 'intersection',
+             'lady', 'formal', 'shoulder', 'broadcasted', 'nutrients', 'parasite', 'shapes', 'become', 'foolish',
+             'refugees', 'clap', 'motor', 'witchcraft', 'village', 'crown', 'back', 'competition', 'hair', 'economic',
+             'election', 'mirror', 'dermatology', 'stealthily', 'employment', 'Mwalimu', 'recently', 'Singapore',
+             'legal', 'religion', 'Facebook', 'knife', 'biology', 'noise', 'Kikuyu', 'business', 'odor', 'agreement',
+             'pressure', 'bolt', 'manufacturing', 'Russia', 'stage', 'sister', 'nosebleed', 'shoes', 'dinner',
+             'militia', 'afternoon', 'neighbor', 'commit', 'road', 'pollution', 'garbage', 'facility', 'weather',
+             'cultivated', 'mental', 'vaccination', 'long', 'fight', 'editor', 'heritage', 'egg', 'building',
+             'potassium', 'fireworks', 'library', 'courts', 'buying', 'made', 'operating', 'official', 'Africa', 'up',
+             'albinos', 'planet', 'decorate', 'problem', 'felicitation', 'passenger', 'escaping', 'USA', 'Cross', 'pig',
+             'coordinator', 'warning', 'politics', 'education', 'bishop', 'physical', 'Babati', 'cashew', 'flood',
+             'book', 'boon', 'earthen', 'smell', 'chemist', 'picture', 'symbol', 'enterprise', 'insect', 'important',
+             'Mapinduzi', 'presidential', 'South', 'alcohol', 'Kisumu', 'land', 'apology', 'vice', 'fertilize',
+             'percentage', 'Al', 'fraudulent', 'beverage', 'Sahara', 'time', 'overseas'])
+         """
+        self._content = {2054, 16396, 2064, 49170, 4119, 8217, 8223, 4137, 4142, 2739, 8259, 72, 2122, 6839, 2130, 697, 2136, 89,
+             698, 97, 6162, 22642, 117, 2167, 127, 133, 13335, 8898, 143, 146, 149, 4254, 159, 41120, 162, 163, 6308,
+             2215, 169, 176, 4274, 179, 182, 2234, 187, 188, 189, 6335, 200, 209, 216, 6361, 219, 220, 223, 225, 226,
+             45284, 230, 231, 233, 236, 237, 2287, 243, 244, 2294, 1748, 254, 257, 262, 20746, 1411, 2325, 2326, 283,
+             296, 2348, 6446, 6877, 6449, 1418, 6463, 326, 6471, 328, 6473, 331, 338, 12686, 342, 557, 4447, 2400, 360,
+             2414, 368, 2417, 372, 375, 4472, 379, 382, 4480, 6530, 6531, 4484, 389, 394, 695, 398, 400, 2450, 408,
+             47518, 2468, 425, 12719, 2487, 46280, 444, 2496, 75, 455, 459, 466, 39382, 479, 488, 4586, 496, 2546, 2548,
+             11337, 512, 2561, 45570, 515, 516, 518, 521, 522, 16908, 4791, 4628, 39446, 536, 4633, 1455, 540, 12829,
+             543, 2592, 545, 2600, 2602, 2605, 10798, 6706, 570, 19005, 578, 2628, 4680, 2633, 22967, 21072, 597, 39511,
+             12888, 783, 605, 6750, 12899, 6760, 617, 21025, 2678, 45690, 2684, 2691, 6791, 6796, 3864, 659, 662, 8855,
+             2720, 8872, 8878, 687, 1139, 2742, 2743, 4793, 2746, 699, 6844, 4800, 2753, 5138, 710, 21192, 4809, 21203,
+             8917, 10970, 731, 39645, 2782, 6884, 4852, 8949, 761, 39039, 766, 4863, 45867, 772, 12758, 8966, 11016,
+             782, 4879, 6930, 792, 23321, 2845, 21280, 802, 2851, 2853, 47915, 4908, 9010, 4910, 13103, 2866, 4915, 821,
+             2871, 6968, 825, 828, 831, 832, 31554, 835, 846, 6994, 851, 855, 37722, 860, 863, 865, 878, 886, 490, 4991,
+             901, 2955, 11148, 2961, 11154, 2968, 921, 922, 23453, 2975, 23456, 9125, 2987, 941, 10056, 3912, 952, 5054,
+             3008, 3014, 23495, 972, 11216, 3025, 978, 5076, 3030, 11227, 3039, 992, 13479, 1006, 21489, 5106, 48116,
+             1013, 1015, 5112, 3067, 21502, 13312, 1025, 513, 5134, 1040, 39954, 11285, 5143, 3103, 1057, 1058, 3112,
+             3119, 3121, 1074, 3650, 3125, 5178, 7007, 21572, 21177, 8717, 13497, 13402, 1551, 5215, 1120, 3183, 7283,
+             1140, 11381, 1143, 7300, 7302, 7304, 11405, 1167, 3216, 1169, 3221, 3268, 16338, 3235, 1188, 23719, 42153,
+             1199, 1201, 1209, 2591, 15548, 44225, 1220, 1223, 44232, 23756, 1229, 7378, 1238, 11486, 7395, 1252, 3303,
+             1256, 2224, 451, 3313, 1266, 7415, 3322, 895, 5372, 554, 3326, 5376, 3339, 5389, 16941, 3344, 7443, 1301,
+             5398, 1304, 5401, 5404, 5410, 11555, 3364, 19753, 4272, 1329, 8705, 7488, 1346, 3404, 1357, 23887, 3410,
+             1364, 3414, 228, 3431, 15721, 3436, 3444, 3446, 3451, 1408, 1259, 15751, 7562, 1419, 3469, 3484, 42399,
+             1442, 21925, 1448, 1449, 23979, 925, 1469, 3518, 1474, 42441, 3538, 21979, 3548, 1502, 2640, 3554, 3560,
+             15851, 40429, 40432, 1523, 1524, 1525, 5633, 939, 1543, 15882, 9743, 1552, 46619, 1568, 22054, 9771, 42543,
+             22065, 1590, 40507, 9789, 3648, 15938, 3652, 22088, 3668, 1622, 42585, 7439, 5728, 1635, 3692, 15983,
+             15986, 12905, 3708, 1664, 3714, 5764, 9863, 1681, 1693, 3698, 16052, 1726, 1732, 3162, 7892, 1316, 976,
+             3810, 1763, 1660, 44781, 1775, 3829, 16119, 16125, 40712, 9993, 7950, 7951, 1816, 22300, 10016, 1825, 5924,
+             7976, 7980, 16176, 1841, 3897, 5947, 7996, 539, 10054, 1864, 1867, 26444, 1871, 3921, 5982, 1888, 8033,
+             8038, 3943, 1901, 22397, 6017, 11586, 10131, 40855, 1224, 1953, 2861, 10150, 16295, 16296, 3058, 1968,
+             1970, 8115, 20404, 8117, 8124, 2379, 1989, 7500, 45004, 4046, 6098, 2007, 6117, 12968, 16375, 8185, 2043,
+             2046}
         # print tgt_vocab.stoi['the']
-        # print fields['tgt'].vocab.itos[the_index]
+        # print tgt_vocab.itos[the_index]
 
     def _make_shard_state(self, batch, output, range_, attns=None):
         return {
@@ -247,12 +354,19 @@ class NMTLossCompute(LossComputeBase):
             scores = self.generator(bottled_output)
         gtruth = target.view(-1)
 
-        # idx = self._tgt_vocab.stoi['the']
-        # idx_The = self._tgt_vocab.stoi['The']
-
         loss = self.criterion(scores, gtruth)
 
-        #pred = scores.max(1)[1]
+        pred = scores.max(1)[1]
+
+        cnt = 0
+        for idx in self._content:
+            if idx in gtruth and idx not in pred:
+                cnt += 1
+                if cnt > 50:
+                    break
+
+        if cnt > 10:
+            loss *= cnt / 7.0
 
         #if idx not in pred and idx in gtruth:
         #    loss *= 3
