@@ -226,6 +226,10 @@ class NMTLossCompute(LossComputeBase):
                 ignore_index=self.padding_idx, size_average=False
             )
 
+        self._tgt_vocab = tgt_vocab
+        # print tgt_vocab.stoi['the']
+        # print fields['tgt'].vocab.itos[the_index]
+
     def _make_shard_state(self, batch, output, range_, attns=None):
         return {
             "output": output,
@@ -243,9 +247,18 @@ class NMTLossCompute(LossComputeBase):
             scores = self.generator(bottled_output)
         gtruth = target.view(-1)
 
-        loss = self.criterion(scores, gtruth)
-        stats = self._stats(loss.clone(), scores, gtruth)
+        # idx = self._tgt_vocab.stoi['the']
+        # idx_The = self._tgt_vocab.stoi['The']
 
+        loss = self.criterion(scores, gtruth)
+
+        #pred = scores.max(1)[1]
+
+        #if idx not in pred and idx in gtruth:
+        #    loss *= 3
+
+        # print loss
+        stats = self._stats(loss.clone(), scores, gtruth)
         return loss, stats
 
 
