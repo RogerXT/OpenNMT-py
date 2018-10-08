@@ -13,6 +13,8 @@ import onmt
 import onmt.inputters as inputters
 from onmt.modules.sparse_losses import SparsemaxLoss
 
+import random
+
 
 def build_loss_compute(model, tgt_vocab, opt, train=True):
     """
@@ -358,15 +360,19 @@ class NMTLossCompute(LossComputeBase):
 
         pred = scores.max(1)[1]
 
+        content = random.sample(self._content, 30)
         cnt = 0
-        for idx in self._content:
+        for idx in content:
             if idx in gtruth and idx not in pred:
                 cnt += 1
-                if cnt > 50:
-                    break
 
-        if cnt > 10:
-            loss *= cnt / 7.0
+        if cnt:
+            if cnt < 5:
+                loss *= 2
+            elif cnt < 10:
+                loss *= 3
+            else:
+                loss *= 5
 
         #if idx not in pred and idx in gtruth:
         #    loss *= 3
