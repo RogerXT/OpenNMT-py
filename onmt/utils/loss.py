@@ -303,7 +303,7 @@ class NMTLossCompute(LossComputeBase):
                 if id in self._ignore:
                     weights.append(0.5)
                 elif id in self._content:
-                    weights.append(10.0)
+                    weights.append(2.0)
                 else:
                     weights.append(1.0)
                 #if not loss[i]:
