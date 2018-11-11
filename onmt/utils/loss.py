@@ -232,7 +232,7 @@ class NMTLossCompute(LossComputeBase):
         self._ignore = {0, 43, 5, 6, 265, 13, 14, 19, 20, 21, 22, 23, 24, 29, 30, 31, 32, 34, 36, 37, 39, 555, 46,
                         47, 48, 50, 52, 55, 56, 59, 63, 288, 74, 79, 2303}
         # 0 means <unk>
-        self._content = {4, 2054, 7, 8, 9, 10, 16396, 2064, 17, 49170, 4119, 8217, 26, 28, 8223, 35, 4137, 4142,
+        self._content = torch.tensor([4, 2054, 7, 8, 9, 10, 16396, 2064, 17, 49170, 4119, 8217, 26, 28, 8223, 35, 4137, 4142,
                              2739, 60, 8259, 72, 12, 2122, 6839, 2130, 697, 2136, 89, 698, 97, 6162, 22642, 117, 2167,
                              127, 133, 13335, 8898, 143, 146, 149, 4254, 159, 41120, 162, 163, 6308, 2417, 169, 176,
                              4274, 179, 182, 2234, 187, 188, 189, 191, 200, 209, 216, 6361, 219, 220, 223, 225, 226,
@@ -269,7 +269,7 @@ class NMTLossCompute(LossComputeBase):
                              3897, 5947, 7996, 10054, 1864, 1867, 26444, 1871, 3921, 5982, 1888, 8033, 8038, 3943, 1901,
                              22397, 6017, 11586, 10131, 40855, 1224, 1953, 2861, 10150, 16295, 16296, 3058, 1968, 1970,
                              8115, 20404, 8117, 8124, 2379, 1989, 7500, 45004, 4046, 16338, 2007, 6117, 12968, 16375,
-                             8185, 2043, 2046}
+                             8185, 2043, 2046]).to(self._device)
         # print tgt_vocab.stoi['the']
         # print tgt_vocab.itos[the_index]
 
@@ -293,23 +293,17 @@ class NMTLossCompute(LossComputeBase):
         loss = self.criterion(scores, gtruth)
         # loss.shape == gtruth.shape == pred.shape
 
-        pred = scores.max(1)[1]
-        wrong = pred != gtruth
+        #pred = scores.max(1)[1]
 
-        weights = []
-        for i in range(len(wrong)):
-            if wrong[i]:
-                id = int(gtruth[i])
-                if id in self._ignore:
-                    weights.append(0.5)
-                elif id in self._content:
-                    weights.append(2.0)
-                else:
-                    weights.append(1.0)
-                #if not loss[i]:
-                #    loss[i] += 1.0
-            else:
-                weights.append(0.2) # loss is 0
+        # x = torch.tensor([1, 2, 3, 4, 5, 6, 7, 8, 9]).to(device)
+        # y = torch.tensor([2, 3, 5]).to(device)
+        # check whether element in x is in y
+        # z = x.view(1, -1).eq(y.view(-1, 1)).sum(0).float()
+
+        w = 9.0
+        b = 1.0
+
+        weights = gtruth.view(1, -1).eq(self._content.view(-1, 1)).sum(0).float() * w + b
 
         loss = (loss * torch.tensor(weights).to(self._device)).sum()
 
